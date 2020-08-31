@@ -1,25 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { FeedCard } from './Components/FeedCard';
 
-function App() {
+const App = () => {
+
+const [data, setData] = useState([]);
+
+useEffect(() => {
+  fetch('./dbFeed.json')
+    .then(response => response.json())
+    .then((data => setData(data)),
+    error => console.error(error));
+
+  }, []);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1 className="title app__title">Ты сегодня покормил кота?</h1>
+      <div className="feed-block">
+        {data.map(item => <FeedCard data={item} key={item.key} />)}
+      </div>
+    </>
   );
 }
 
